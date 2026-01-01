@@ -7,6 +7,9 @@
 #include <unistd.h>
 
 #define BUFFER_SIZE 256
+#define PORT_NUM    8080
+#define BACKLOG_LEN 3
+#define NUM_FDS     2
 
 int main()
 {
@@ -20,7 +23,7 @@ int main()
     // server info
     struct sockaddr_in server_addr;
     server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(8080);
+    server_addr.sin_port = htons(PORT_NUM);
     server_addr.sin_addr.s_addr = INADDR_ANY;
 
     int bind_status = bind(passive_socketfd, (struct sockaddr *)&server_addr,
@@ -31,7 +34,7 @@ int main()
         return -1;
     }
 
-    listen(passive_socketfd, 3);
+    listen(passive_socketfd, BACKLOG_LEN);
 
     int socketfd;
     socketfd = accept(passive_socketfd, NULL, NULL);
@@ -41,16 +44,25 @@ int main()
     }
 
     // stdin and socket
-    struct pollfd fds[2] = {{0, POLLIN, 0}, {socketfd, POLLIN, 0}};
+    struct pollfd fds[NUM_FDS] = {{0, POLLIN, 0}, {socketfd, POLLIN, 0}};
 
     // 0b 0000 0000 0000 0001 == data available
     for(;;) {
-        poll(fds, 2, -1);
+        poll(fds, NUM_FDS, -1);
         char buffer[BUFFER_SIZE] = {0};
 
         // server to client
         if(fds[0].revents & POLLIN) {
             int bytes_read = read(0, buffer, sizeof(buffer) - 1);
+            if(bytes_read > 0) {
+                buffer[bytes_read] = '\0';
+            }
+            send(socketfd, buffer, bytes_read, 0);
+        }
+
+        // client to server
+        if(fds[1].revents & POLLIN) {
+            int bytes_read = recv(socketfd, buffer, sizeof(buffer) - 1, 0);
             if(bytes_read == 0) {
                 printf("Client has left\n");
                 return 0;
@@ -60,15 +72,6 @@ int main()
                 buffer[bytes_read] = '\0';
             }
 
-            send(socketfd, buffer, bytes_read, 0);
-        }
-
-        // client to server
-        if(fds[1].revents & POLLIN) {
-            int bytes_read = recv(socketfd, buffer, sizeof(buffer) - 1, 0);
-            if(bytes_read > 0) {
-                buffer[bytes_read] = '\0';
-            }
             printf("Client response: %s\n", buffer);
         }
     }

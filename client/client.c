@@ -7,7 +7,10 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#define BUFFER_SIZE 256
+#define SERVER_IP_ADDR "192.168.0.248"
+#define BUFFER_SIZE    256
+#define PORT_NUM       8080
+#define NUM_FDS        2
 
 int main()
 {
@@ -21,8 +24,8 @@ int main()
     // server info
     struct sockaddr_in server_addr;
     server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(8080);
-    server_addr.sin_addr.s_addr = inet_addr("192.168.0.248");
+    server_addr.sin_port = htons(PORT_NUM);
+    server_addr.sin_addr.s_addr = inet_addr(SERVER_IP_ADDR);
 
     int connect_status;
     connect_status =
@@ -34,11 +37,11 @@ int main()
     }
 
     // stdin and socket
-    struct pollfd fds[2] = {{0, POLLIN, 0}, {socketfd, POLLIN, 0}};
+    struct pollfd fds[NUM_FDS] = {{0, POLLIN, 0}, {socketfd, POLLIN, 0}};
 
     // 0b 0000 0000 0000 0001 == data available
     for(;;) {
-        poll(fds, 2, -1);
+        poll(fds, NUM_FDS, -1);
         char buffer[BUFFER_SIZE] = {0};
 
         // client to server
