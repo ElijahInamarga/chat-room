@@ -35,6 +35,8 @@ int main()
         printf("Error connecting socket to server\n");
         return -1;
     }
+    
+    printf("Successfully connected to server\n");
 
     // stdin and socket
     struct pollfd fds[NUM_FDS] = {{0, POLLIN, 0}, {socketfd, POLLIN, 0}};

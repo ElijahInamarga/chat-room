@@ -42,6 +42,8 @@ int main()
         printf("Error accepting connection\n");
         return -1;
     }
+        
+    printf("Client has connected\n");
 
     // stdin and socket
     struct pollfd fds[NUM_FDS] = {{0, POLLIN, 0}, {socketfd, POLLIN, 0}};
