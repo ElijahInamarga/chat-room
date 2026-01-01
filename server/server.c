@@ -32,14 +32,14 @@ int main()
 
     struct pollfd fds[2] = {{0, POLLIN, 0}, {active_socket_fd, POLLIN, 0}};
 
-    // 0000 0000 0000 0001 == data available
+    // 0b 0000 0000 0000 0001 == data available
     for(;;) {
         char buffer[BUFFER_SIZE] = {0};
         poll(fds, 2, 50000);
 
         // read stdin and send to client
         if(fds[0].revents & POLLIN) {
-            read(0, buffer, 255);
+            read(0, buffer, BUFFER_SIZE - 1);
             send(active_socket_fd, buffer, BUFFER_SIZE - 1, 0);
         }
 
@@ -48,10 +48,11 @@ int main()
             if(recv(active_socket_fd, buffer, BUFFER_SIZE - 1, 0) == 0) {
                 return 0;
             }
-            printf("%s\n", buffer);
+            printf("Response: %s\n", buffer);
         }
     }
 
     close(passive_socket_fd);
+
     return 0;
 }

@@ -1,3 +1,4 @@
+#include <arpa/inet.h>
 #include <netinet/in.h>
 #include <poll.h>
 #include <stdio.h>
@@ -16,7 +17,8 @@ int main()
     }
 
     // destination address
-    struct sockaddr_in server_addr = {AF_INET, htons(9999), 0};
+    struct sockaddr_in server_addr = {AF_INET, htons(9999),
+                                      inet_addr("192.168.0.248")};
 
     int connect_status = connect(socket_fd, (struct sockaddr *)&server_addr,
                                  sizeof(server_addr));
@@ -27,7 +29,7 @@ int main()
 
     struct pollfd fds[2] = {{0, POLLIN, 0}, {socket_fd, POLLIN, 0}};
 
-    // 0000 0000 0000 0001 == data available
+    // 0b 0000 0000 0000 0001 == data available
     for(;;) {
         char buffer[256] = {0};
 
@@ -35,7 +37,7 @@ int main()
 
         // read stdin and send to server
         if(fds[0].revents & POLLIN) {
-            read(0, buffer, 255);
+            read(0, buffer, BUFFER_SIZE - 1);
             send(socket_fd, buffer, BUFFER_SIZE - 1, 0);
         }
 
