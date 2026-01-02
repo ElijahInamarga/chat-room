@@ -23,7 +23,7 @@ void handle_sigint(int sig)
  * currently not in use
  * IGNORE!
  */
-#define NUM_FDS 2 //
+#define NUM_FDS 2
 int start_session(int socketfd)
 {
     // stdin and socket
