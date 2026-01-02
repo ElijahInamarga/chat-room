@@ -7,12 +7,14 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <string.h>
 
 #define BUFFER_SIZE 256
 #define PORT_NUM    8080
 #define NUM_FDS     2
+#define IP_LEN      64
 
-char                  SERVER_IP_ADDR[64] = "";
+char                  SERVER_IP_ADDR[IP_LEN] = "";
 volatile sig_atomic_t keep_running = 1;
 
 void handle_sigint(int sig)
@@ -108,10 +110,11 @@ int connect_to_server()
 int main()
 {
     printf("STATUS: Enter server public IP: ");
-    if(scanf("%63s", SERVER_IP_ADDR) != 1) {
+    if(fgets(SERVER_IP_ADDR, IP_LEN, stdin) == NULL) {
         printf("STATUS: Invalid input\n");
         return -1;
     }
+    SERVER_IP_ADDR[strcspn(SERVER_IP_ADDR, "\r\n")] = 0;
 
     // connect to server
     int socketfd = connect_to_server();
