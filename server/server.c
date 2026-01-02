@@ -10,16 +10,17 @@
 #define BUFFER_SIZE 256
 #define PORT_NUM    8080
 #define BACKLOG_LEN 3
-#define MAX_CLIENTS 3
+#define MAX_CLIENTS 5
 
-volatile sig_atomic_t keep_running = 1;
+volatile sig_atomic_t keep_running = 1; // process state
 
 void handle_sigint(int sig)
 {
     keep_running = 0;
 }
 
-/* only used for singleclient to server interation
+/*
+ * only used for one-to-one client to server interation
  * currently not in use
  * IGNORE!
  */
@@ -68,6 +69,11 @@ int start_session(int socketfd)
     return 0;
 }
 
+/*
+ * only used for one-to-one client to server interation
+ * currently not in use
+ * IGNORE!
+ */
 void close_session(int socketfd)
 {
     close(socketfd);
@@ -200,7 +206,7 @@ int main()
         return -1;
     }
 
-    signal(SIGINT, handle_sigint);
+    signal(SIGINT, handle_sigint); // used for elegant exit
 
     // begin session with client
     server_sesh(listener_socketfd);
