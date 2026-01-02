@@ -6,3 +6,7 @@ multi-client messaging without the overhead of high-level frameworks through the
 ## How to use
 The architecture follows a centralized server-client model, where a dedicated hub manages concurrent connections and facilitates real-time
 communication between all connected peers.
+
+[**Server Setup Instructions**](https://github.com/ElijahInamarga/chat-room/tree/master/server)
+
+[**Client Setup Instructions**](https://github.com/ElijahInamarga/chat-room/tree/master/client)
