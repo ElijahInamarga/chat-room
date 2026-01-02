@@ -41,7 +41,7 @@ int start_session(int socketfd)
         if(fds[1].revents & POLLIN) {
             int bytes_read = recv(socketfd, buffer, sizeof(buffer) - 1, 0);
             if(bytes_read == 0) {
-                printf("Server terminated\n");
+                printf("STATUS: Server terminated\n");
                 return 0;
             }
 
@@ -49,7 +49,7 @@ int start_session(int socketfd)
                 buffer[bytes_read] = '\0';
             }
 
-            printf("Server: %s", buffer);
+            printf("Chat: %s", buffer);
         }
     }
 
@@ -66,7 +66,7 @@ int connect_to_server()
     int socketfd;
     socketfd = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
     if(socketfd == -1) {
-        perror("Error creating socket\n");
+        perror("STATUS: Error creating socket\n");
         return -1;
     }
 
@@ -81,11 +81,11 @@ int connect_to_server()
         connect(socketfd, (struct sockaddr *)&server_addr, sizeof(server_addr));
 
     if(connect_status == -1) {
-        perror("Error connecting socket to server\n");
+        perror("STATUS: Error connecting socket to server\n");
         return -1;
     }
 
-    printf("Connected to server\n\n");
+    printf("STATUS: Connected to server\n");
     return socketfd;
 }
 
@@ -94,7 +94,7 @@ int main()
     // connect to server
     int socketfd = connect_to_server();
     if(socketfd == -1) {
-        printf("Could not connect to server\n");
+        printf("STATUS: Could not connect to server\n");
         return -1;
     }
 
