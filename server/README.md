@@ -7,9 +7,9 @@ If you are using a firewall like `ufw`, you must explicitly allow traffic on the
 sudo ufw allow 8080/tcp
 ```
 If you want users outside your local Wi-Fi to join, you must configure your router:
- - Static IP: Assign a reserved local IP to your server machine in your router settings.
- - Port Forwarding: Create a rule in your router (e.g., Cox Panoramic App) to forward Port 8080 (TCP) to your server's local IP.
- - Advanced Security: Disable ISP-level "Advanced Security" features if they block unauthorized incoming TCP requests.
+ - **Static IP:** Assign a reserved local IP to your server machine in your router settings.
+ - **Port Forwarding:** Create a rule in your router (e.g., Cox Panoramic App) to forward Port 8080 (TCP) to your server's local IP.
+ - **Advanced Security:** Disable ISP-level "Advanced Security" features if they block unauthorized incoming TCP requests.
 
 cd into the `server/` directory (where you're currently at) and compile the server program
 ```
