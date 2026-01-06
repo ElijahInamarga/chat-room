@@ -1,6 +1,6 @@
 # chat-room
 
-A C-based chat application for real-time, multi-client messaging without the overhead of high-level frameworks through the implemention of a custom TCP server-client architecture. 
+A C-based chat application for real-time, multi-client messaging without the overhead of high-level frameworks. 
 
 ## How to use
 This architecture follows a centralized server-client model, where a dedicated hub manages concurrent connections and manages real-time
