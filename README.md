@@ -12,7 +12,8 @@ communication between all connected users.
 
 ## Future Additions
 This project is ongoing. Goals to work towards but not limited to:
-- Implement a small corner GUI
+- Implement a small corner GUI (?)
 - Turn into a CLI tool
 - Better and easier accessibility (get a domain)
-- Better security 
+- Better security
+- Embedded application (?)
