@@ -15,5 +15,5 @@ This project is ongoing. Goals to work towards but not limited to:
 - Implement a small corner GUI (?)
 - Turn into a CLI tool
 - Better and easier accessibility (get a domain)
-- Better security
+- Better security (remove globals, etc.)
 - Embedded application (?)
